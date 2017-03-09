@@ -1,0 +1,73 @@
+﻿@model companyOrganisationC.Models.Skill
+
+@{
+    ViewBag.Title = "SkillDetails";
+}
+
+<h2>@ViewBag.SkillInfo.SkillName</h2>
+
+<div>
+    <h4>@ViewBag.SkillInfo.SkillDescription</h4>
+    <h4>Added on: @ViewBag.SkillInfo.SkillCreationDate</h4>
+    <hr />
+</div>
+@if (ViewBag.UserSkills.Count > 0)
+{
+    <h2>Users with this skill</h2>
+    for (int i = 0; i < ViewBag.UserSkills.Count; i++)
+    {
+        for (int j = 0; j < ViewBag.UserInfo.Count; j++)
+        {
+            if (ViewBag.UserSkills[i].UserId == ViewBag.UserInfo[j].Id)
+            {
+                <div class="row">
+                    <p><img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1"/>
+                    </p>
+                    <p>
+                        @ViewBag.UserInfo[j].FirstName @ViewBag.UserInfo[j].LastName || Stage: @ViewBag.UserSkills[i].Stage (@ViewBag.UserSkills[i].ExpYears years of experience)
+                    </p>
+                    <p>@Html.ActionLink("User profile", "UserDetails", new {id = @ViewBag.UserInfo[j].Id}, new { @class = "btn btn-info col-md-1" })</p>
+                </div>
+                <br/>
+            }
+        }
+    }
+}
+else
+{
+    <h4>No users have this skill achieved</h4>
+}
+
+<hr/>
+<br/>
+<hr/>
+
+@if (ViewBag.UserFocuses.Count > 0)
+{
+    <h2>Users focusing on this skill</h2>
+    for (int i = 0; i < ViewBag.UserFocuses.Count; i++)
+    {
+        for (int j = 0; j < ViewBag.UserInfo.Count; j++)
+        {
+            if (ViewBag.UserFocuses[i].UserId == ViewBag.UserInfo[j].Id)
+            {
+                <div class="row">
+                    <p><img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1" /></p>
+                    <p>
+                        @ViewBag.UserInfo[j].FirstName @ViewBag.UserInfo[j].LastName ||
+                    </p>
+                    <p>@Html.ActionLink("User profile", "UserDetails", new { id = @ViewBag.UserInfo[j].Id }, new { @class = "btn btn-info col-md-1"})</p>
+                </div>
+                <br />
+            }
+        }
+    }
+}
+else
+{
+    <h4>No users focus on this skill</h4>
+}
+<p>
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.SkillId }) |*@
+    @Html.ActionLink("Back to List", "SkillList")
+</p>

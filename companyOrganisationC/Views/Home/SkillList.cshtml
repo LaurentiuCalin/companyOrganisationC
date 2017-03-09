@@ -1,0 +1,183 @@
+﻿@model IEnumerable<companyOrganisationC.Models.Skill>
+
+@{
+    ViewBag.Title = "SkillList";
+}
+
+<h2>Skills List</h2>
+
+@if (User.IsInRole("Admin"))
+{
+    <p>
+        @Html.ActionLink("Add skill", "CreateSkill", null, new { @class = "btn btn-success" })
+    </p>
+}
+
+<table class="table table-hover">
+    <tr>
+        <th class="col-md-4">
+            @Html.DisplayNameFor(model => model.SkillName)
+        </th>
+        <th class="col-md-4">
+            @Html.DisplayNameFor(model => model.SkillDescription)
+        </th>
+        <th class="col-md-4">
+
+        </th>
+
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SkillName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SkillDescription)
+            </td>
+            <td>
+                @if (User.IsInRole("Admin"))
+                {
+
+                    @Html.ActionLink("Delete", "DeleteSkill", new { id = item.SkillId }, new { @class = "btn btn-danger" })
+
+                }
+
+                @if (!User.IsInRole("Admin"))
+                {
+                    @Html.ActionLink("Set as focus", "ChooseFocus", new { id = item.SkillId }, new { @class = "btn btn-warning" })
+                    <span>   </span>
+                    @Html.ActionLink("Set as achieved", "AchievedSkill", new { id = item.SkillId }, new { @class = "btn btn-primary" })
+                }
+
+                @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+            </td>
+
+        </tr>
+    }
+
+</table>
+
+<br />
+<hr />
+<br />
+
+@if (User.IsInRole("Admin"))
+{
+    <h2>Employees</h2>
+    <table class="table table-hover">
+        <tr>
+            <th class="col-md-3">
+
+            </th>
+            <th class="col-md-3">
+                Name
+            </th>
+            <th class="col-md-3">
+                Email
+            </th>
+            <th class="col-md-3"></th>
+        </tr>
+        @foreach (var user in ViewBag.companyUsers)
+        {
+            <tr>
+                <td>
+                    <img src="/@user.Photo" class="col-md-5" />
+                </td>
+                <td>
+                    @user.FirstName @user.LastName
+                </td>
+                <td>
+                    @user.Email
+                </td>
+                <td>
+                    @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-info" })
+                </td>
+            </tr>
+        }
+    </table>
+}
+
+@if (!User.IsInRole("Admin"))
+{
+    <h2>Focus List</h2>
+    <table class="table table-hover">
+        <tr>
+            <th class="col-md-4">
+                @Html.DisplayNameFor(model => model.SkillName)
+            </th>
+            <th class="col-md-4">
+                Finish date
+            </th>
+            <th class="col-md-4">
+
+            </th>
+        </tr>
+        @foreach (var focus in ViewBag.userFocuses)
+        {
+            foreach (var item in Model)
+            {
+                if (focus.SkillId == item.SkillId)
+                {
+                    <tr>
+                        <td>
+
+                            @item.SkillName
+
+                        </td>
+                        <td>
+                            @focus.Year
+                        </td>
+                        <td>
+                            @Html.ActionLink("Remove", "RemoveFocus", new { id = focus.UserFocusId }, new { @class = "btn btn-danger" })
+                        
+                            @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+
+    <h2>Achievements List</h2>
+    <table class="table table-hover">
+        <tr>
+            <th class="col-md-4">
+                @Html.DisplayNameFor(model => model.SkillName)
+            </th>
+            <th class="col-md-4">
+                Stage
+            </th>
+            <th class="col-md-4">
+
+            </th>
+        </tr>
+        @foreach (var skill in ViewBag.userSkills)
+        {
+            foreach (var item in Model)
+            {
+                if (skill.SkillId == item.SkillId)
+                {
+                    <tr>
+
+                        <td>
+
+                            @item.SkillName
+
+                        </td>
+                        <td>
+                            @skill.Stage
+                        </td>
+                        <td>
+                            @Html.ActionLink("Remove", "RemoveSkill", new { id = skill.UserSkillId }, new { @class = "btn btn-danger" })
+
+                            @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+                        </td>
+
+                    </tr>
+                }
+            }
+        }
+    </table>
+}

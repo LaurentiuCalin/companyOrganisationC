@@ -1,0 +1,139 @@
+﻿@model companyOrganisationC.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "UserDetails";
+}
+
+<div>
+    <br />
+    <div class="row">
+        <div class="col-md-2">
+            <img src="/@Html.DisplayFor(model => model.Photo)" class="col-md-12" />
+        </div>
+        <div class="col-md-6">
+            <dl class="dl-horizontal">
+                <dt>
+                    @Html.DisplayNameFor(model => model.FirstName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.FirstName)
+                </dd>
+
+                <dt>
+                    @Html.DisplayNameFor(model => model.LastName)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.LastName)
+                </dd>
+                <dt>
+                    @Html.DisplayNameFor(model => model.Email)
+                </dt>
+
+                <dd>
+                    @Html.DisplayFor(model => model.Email)
+                </dd>
+            </dl>
+        </div>
+
+    </div>
+
+</div>
+<br />
+<hr />
+@if (ViewBag.UserFocus.Count > 0)
+{
+    <h2>Yearly focuses</h2>
+    <table class="table table-hover">
+        <tr>
+            <th class="col-md-4">
+                Skill
+            </th>
+            <th class="col-md-4">
+                Finish date
+            </th>
+            <th class="col-md-4">
+
+            </th>
+        </tr>
+        @for (int i = 0; i < ViewBag.UserFocus.Count; i++)
+        {
+            for (int j = 0; j < ViewBag.Skills.Count; j++)
+            {
+                if (ViewBag.UserFocus[i].SkillId == ViewBag.Skills[j].SkillId)
+                {
+                    <tr>
+                        <td>
+                            @ViewBag.Skills[j].SkillName
+                        </td>
+                        <td>
+                            @ViewBag.UserFocus[i].Year
+                        </td>
+                        <td>
+                            @Html.ActionLink("Skill info", "SkillDetails", new {id = ViewBag.Skills[j].SkillId}, new {@class = "btn btn-info"})
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+}
+else
+{
+    <br/>
+    <h4>No focuses selected</h4>
+}
+
+@if (ViewBag.UserSkill.Count > 0)
+{
+    <h2>Achieved skills</h2>
+    <table class="table table-hover">
+        <tr>
+            <th class="col-md-3">
+                Skill
+            </th>
+            <th class="col-md-3">
+                Stage
+            </th>
+            <th class="col-md-3">
+                Years of experience
+            </th>
+            <th class="col-md-3">
+
+            </th>
+        </tr>
+        @for (int i = 0; i < ViewBag.UserSkill.Count; i++)
+        {
+            for (int j = 0; j < ViewBag.Skills.Count; j++)
+            {
+                if (ViewBag.UserSkill[i].SkillId == ViewBag.Skills[j].SkillId)
+                {
+                    <tr>
+                        <td>
+                            @ViewBag.Skills[j].SkillName
+                        </td>
+                        <td>
+                            @ViewBag.UserSkill[i].Stage
+                        </td>
+                        <td>
+                            @ViewBag.UserSkill[i].ExpYears
+                        </td>
+                        <td>
+                            @Html.ActionLink("Skill info", "SkillDetails", new {id = ViewBag.Skills[j].SkillId}, new {@class = "btn btn-info"})
+                        </td>
+                    </tr>
+                }
+            }
+        }
+    </table>
+}
+else
+{
+    <h4>No skills achieved</h4>
+}
+
+
+<p>
+    @Html.ActionLink("Back to List", "SkillList")
+</p>
