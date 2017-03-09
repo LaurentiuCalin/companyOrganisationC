@@ -5,10 +5,10 @@
 }
 
 <div>
-    <br />
+    <br/>
     <div class="row">
         <div class="col-md-2">
-            <img src="/@Html.DisplayFor(model => model.Photo)" class="col-md-12" />
+            <img src="/@Html.DisplayFor(model => model.Photo)" class="col-md-12"/>
         </div>
         <div class="col-md-6">
             <dl class="dl-horizontal">
@@ -40,8 +40,8 @@
     </div>
 
 </div>
-<br />
-<hr />
+<br/>
+<hr/>
 @if (ViewBag.UserFocus.Count > 0)
 {
     <h2>Yearly focuses</h2>
@@ -57,9 +57,9 @@
 
             </th>
         </tr>
-        @for (int i = 0; i < ViewBag.UserFocus.Count; i++)
+        @for (var i = 0; i < ViewBag.UserFocus.Count; i++)
         {
-            for (int j = 0; j < ViewBag.Skills.Count; j++)
+            for (var j = 0; j < ViewBag.Skills.Count; j++)
             {
                 if (ViewBag.UserFocus[i].SkillId == ViewBag.Skills[j].SkillId)
                 {
@@ -103,9 +103,9 @@ else
 
             </th>
         </tr>
-        @for (int i = 0; i < ViewBag.UserSkill.Count; i++)
+        @for (var i = 0; i < ViewBag.UserSkill.Count; i++)
         {
-            for (int j = 0; j < ViewBag.Skills.Count; j++)
+            for (var j = 0; j < ViewBag.Skills.Count; j++)
             {
                 if (ViewBag.UserSkill[i].SkillId == ViewBag.Skills[j].SkillId)
                 {

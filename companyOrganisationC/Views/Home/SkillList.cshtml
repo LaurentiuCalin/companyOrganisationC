@@ -9,7 +9,7 @@
 @if (User.IsInRole("Admin"))
 {
     <p>
-        @Html.ActionLink("Add skill", "CreateSkill", null, new { @class = "btn btn-success" })
+        @Html.ActionLink("Add skill", "CreateSkill", null, new {@class = "btn btn-success"})
     </p>
 }
 
@@ -39,19 +39,17 @@
             <td>
                 @if (User.IsInRole("Admin"))
                 {
-
-                    @Html.ActionLink("Delete", "DeleteSkill", new { id = item.SkillId }, new { @class = "btn btn-danger" })
-
+                    @Html.ActionLink("Delete", "DeleteSkill", new {id = item.SkillId}, new {@class = "btn btn-danger"})
                 }
 
                 @if (!User.IsInRole("Admin"))
                 {
-                    @Html.ActionLink("Set as focus", "ChooseFocus", new { id = item.SkillId }, new { @class = "btn btn-warning" })
-                    <span>   </span>
-                    @Html.ActionLink("Set as achieved", "AchievedSkill", new { id = item.SkillId }, new { @class = "btn btn-primary" })
+                    @Html.ActionLink("Set as focus", "ChooseFocus", new {id = item.SkillId}, new {@class = "btn btn-warning"})
+                    <span> </span>
+                    @Html.ActionLink("Set as achieved", "AchievedSkill", new {id = item.SkillId}, new {@class = "btn btn-primary"})
                 }
 
-                @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+                @Html.ActionLink("Details", "SkillDetails", new {id = item.SkillId}, new {@class = "btn btn-info"})
             </td>
 
         </tr>
@@ -59,9 +57,9 @@
 
 </table>
 
-<br />
-<hr />
-<br />
+<br/>
+<hr/>
+<br/>
 
 @if (User.IsInRole("Admin"))
 {
@@ -83,7 +81,7 @@
         {
             <tr>
                 <td>
-                    <img src="/@user.Photo" class="col-md-5" />
+                    <img src="/@user.Photo" class="col-md-5"/>
                 </td>
                 <td>
                     @user.FirstName @user.LastName
@@ -92,7 +90,7 @@
                     @user.Email
                 </td>
                 <td>
-                    @Html.ActionLink("Details", "UserDetails", new { id = user.Id }, new { @class = "btn btn-info" })
+                    @Html.ActionLink("Details", "UserDetails", new {id = user.Id}, new {@class = "btn btn-info"})
                 </td>
             </tr>
         }
@@ -130,9 +128,9 @@
                             @focus.Year
                         </td>
                         <td>
-                            @Html.ActionLink("Remove", "RemoveFocus", new { id = focus.UserFocusId }, new { @class = "btn btn-danger" })
-                        
-                            @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Remove", "RemoveFocus", new {id = focus.UserFocusId}, new {@class = "btn btn-danger"})
+
+                            @Html.ActionLink("Details", "SkillDetails", new {id = item.SkillId}, new {@class = "btn btn-info"})
                         </td>
                     </tr>
                 }
@@ -170,9 +168,9 @@
                             @skill.Stage
                         </td>
                         <td>
-                            @Html.ActionLink("Remove", "RemoveSkill", new { id = skill.UserSkillId }, new { @class = "btn btn-danger" })
+                            @Html.ActionLink("Remove", "RemoveSkill", new {id = skill.UserSkillId}, new {@class = "btn btn-danger"})
 
-                            @Html.ActionLink("Details", "SkillDetails", new { id = item.SkillId }, new { @class = "btn btn-info" })
+                            @Html.ActionLink("Details", "SkillDetails", new {id = item.SkillId}, new {@class = "btn btn-info"})
                         </td>
 
                     </tr>

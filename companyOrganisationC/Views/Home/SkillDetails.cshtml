@@ -9,24 +9,25 @@
 <div>
     <h4>@ViewBag.SkillInfo.SkillDescription</h4>
     <h4>Added on: @ViewBag.SkillInfo.SkillCreationDate</h4>
-    <hr />
+    <hr/>
 </div>
 @if (ViewBag.UserSkills.Count > 0)
 {
     <h2>Users with this skill</h2>
-    for (int i = 0; i < ViewBag.UserSkills.Count; i++)
+    for (var i = 0; i < ViewBag.UserSkills.Count; i++)
     {
-        for (int j = 0; j < ViewBag.UserInfo.Count; j++)
+        for (var j = 0; j < ViewBag.UserInfo.Count; j++)
         {
             if (ViewBag.UserSkills[i].UserId == ViewBag.UserInfo[j].Id)
             {
                 <div class="row">
-                    <p><img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1"/>
+                    <p>
+                        <img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1"/>
                     </p>
                     <p>
                         @ViewBag.UserInfo[j].FirstName @ViewBag.UserInfo[j].LastName || Stage: @ViewBag.UserSkills[i].Stage (@ViewBag.UserSkills[i].ExpYears years of experience)
                     </p>
-                    <p>@Html.ActionLink("User profile", "UserDetails", new {id = @ViewBag.UserInfo[j].Id}, new { @class = "btn btn-info col-md-1" })</p>
+                    <p>@Html.ActionLink("User profile", "UserDetails", new {id = ViewBag.UserInfo[j].Id}, new {@class = "btn btn-info col-md-1"})</p>
                 </div>
                 <br/>
             }
@@ -45,20 +46,22 @@ else
 @if (ViewBag.UserFocuses.Count > 0)
 {
     <h2>Users focusing on this skill</h2>
-    for (int i = 0; i < ViewBag.UserFocuses.Count; i++)
+    for (var i = 0; i < ViewBag.UserFocuses.Count; i++)
     {
-        for (int j = 0; j < ViewBag.UserInfo.Count; j++)
+        for (var j = 0; j < ViewBag.UserInfo.Count; j++)
         {
             if (ViewBag.UserFocuses[i].UserId == ViewBag.UserInfo[j].Id)
             {
                 <div class="row">
-                    <p><img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1" /></p>
+                    <p>
+                        <img src="/@ViewBag.UserInfo[j].Photo" alt="Alternate Text" class="col-md-1"/>
+                    </p>
                     <p>
                         @ViewBag.UserInfo[j].FirstName @ViewBag.UserInfo[j].LastName ||
                     </p>
-                    <p>@Html.ActionLink("User profile", "UserDetails", new { id = @ViewBag.UserInfo[j].Id }, new { @class = "btn btn-info col-md-1"})</p>
+                    <p>@Html.ActionLink("User profile", "UserDetails", new {id = ViewBag.UserInfo[j].Id}, new {@class = "btn btn-info col-md-1"})</p>
                 </div>
-                <br />
+                <br/>
             }
         }
     }

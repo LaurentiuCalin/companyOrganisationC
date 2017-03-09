@@ -1,21 +1,18 @@
+using System.Data.Entity.Migrations;
+using companyOrganisationC.Models;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
+
 namespace companyOrganisationC.Migrations
 {
-    using Microsoft.AspNet.Identity;
-    using Microsoft.AspNet.Identity.EntityFramework;
-    using Models;
-    using System;
-    using System.Data.Entity;
-    using System.Data.Entity.Migrations;
-    using System.Linq;
-
-    internal sealed class Configuration : DbMigrationsConfiguration<companyOrganisationC.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ApplicationDbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(companyOrganisationC.Models.ApplicationDbContext context)
+        protected override void Seed(ApplicationDbContext context)
         {
             //  This method will be called after migrating to the latest version.
 
@@ -31,13 +28,10 @@ namespace companyOrganisationC.Migrations
             //
             var roleManager = new RoleManager<IdentityRole>(new RoleStore<IdentityRole>(new ApplicationDbContext()));
 
-            string role = "Admin";
+            var role = "Admin";
             //Create Role Admin if it does not exist
             if (!roleManager.RoleExists(role))
-            {
                 roleManager.Create(new IdentityRole(role));
-            }
         }
-
     }
 }

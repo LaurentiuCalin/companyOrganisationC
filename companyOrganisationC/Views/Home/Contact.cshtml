@@ -3,11 +3,11 @@
 @{
     ViewBag.Title = "Contact";
 }
-<br />
-<br />
+<br/>
+<br/>
 @if (ViewBag.CompanyInfo == null && User.IsInRole("Admin"))
 {
-    @Html.ActionLink("Add company info", "AddCompany", null, new { @class = "btn btn-success" })
+    @Html.ActionLink("Add company info", "AddCompany", null, new {@class = "btn btn-success"})
 }
 else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
 {
@@ -18,10 +18,10 @@ else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
         @if (ViewBag.CompanyInfo != null)
         {
             <div class="row">
-                <img src="../@ViewBag.CompanyInfo.CmpLogo" alt="Alternate Text" class="col-md-2" />
+                <img src="../@ViewBag.CompanyInfo.CmpLogo" alt="Alternate Text" class="col-md-2"/>
                 <div class="col-md-12">
                     <h4>Company Info</h4>
-                    <hr />
+                    <hr/>
                     <dl class="dl-horizontal">
                         <dt>
                             @Html.DisplayNameFor(model => model.CmpName)
@@ -56,12 +56,11 @@ else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
 
                     </dl>
                     @if (User.IsInRole("Admin"))
-                {
-                    if (ViewBag.CompanyInfo != null)
                     {
-                            @Html.ActionLink("Edit", "EditCmp", new { id = ViewBag.CompanyInfo.CmpId }, new { @class = "btn btn-warning btn-md col-md-3 pull-right" })
+                        if (ViewBag.CompanyInfo != null)
+                        {
+                            @Html.ActionLink("Edit", "EditCmp", new {id = ViewBag.CompanyInfo.CmpId}, new {@class = "btn btn-warning btn-md col-md-3 pull-right"})
                         }
-
                     }
 
 
@@ -79,19 +78,19 @@ else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
                 <h2>Chat</h2>
                 <div class="col-md-6">
                     <p>
-                        <input type="hidden" id="username1" value="@ViewBag.first_name" />
+                        <input type="hidden" id="username1" value="@ViewBag.first_name"/>
                     </p>
                     <p>
-                        <input type="hidden" id="username2" value="@ViewBag.last_name" />
+                        <input type="hidden" id="username2" value="@ViewBag.last_name"/>
                     </p>
                     <form class="form-inline">
                         <div class="form-group">
                             <label for="message">Message: </label>
-                            <input type="text" id="message" class="form-control" />
+                            <input type="text" id="message" class="form-control"/>
                         </div>
                     </form>
-                    <br />
-                    <input type="button" id="send" value="send" class="btn btn-info" />
+                    <br/>
+                    <input type="button" id="send" value="send" class="btn btn-info"/>
 
                     <ul style="list-style: none;" id="messageBox" class="col-md-12"></ul>
                 </div>
@@ -100,7 +99,7 @@ else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
     </div>
 </div>
 
-<br />
+<br/>
 
 <p>
     @Html.ActionLink("Back to List", "SkillList")
@@ -113,17 +112,25 @@ else if (ViewBag.CompanyInfo == null && Request.IsAuthenticated)
     <script>
 
         var chatHub = $.connection.chatHub;
-        chatHub.client.showMessage = function (timeStamp, username, message) {
-            $("#messageBox").append("<li padding:5px'> <span style='color:#888'>At " + timeStamp + "</span> <span style='color:green; font-weight:bold'>" + username + "</span> said: " + message + "</li>");
+        chatHub.client.showMessage = function(timeStamp, username, message) {
+            $("#messageBox").append("<li padding:5px'> <span style='color:#888'>At " +
+                timeStamp +
+                "</span> <span style='color:green; font-weight:bold'>" +
+                username +
+                "</span> said: " +
+                message +
+                "</li>");
         };
 
-        $.connection.hub.start().done(function () {
+        $.connection.hub.start().done(function() {
 
             var dt = new Date();
             var timeStamp = dt.getHours() + ":" + dt.getMinutes() + ":" + dt.getSeconds();
 
-            $("#send").click(function () {
-                chatHub.server.sendMessage(timeStamp, $("#username1").val() + " " + $("#username2").val(), $("#message").val());
+            $("#send").click(function() {
+                chatHub.server.sendMessage(timeStamp,
+                    $("#username1").val() + " " + $("#username2").val(),
+                    $("#message").val());
                 $("#message").val("");
             });
         });

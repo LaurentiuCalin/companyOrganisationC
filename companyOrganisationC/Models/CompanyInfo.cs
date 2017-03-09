@@ -7,7 +7,7 @@ namespace companyOrganisationC.Models
         [Key]
         public int CmpId { get; set; }
 
-        [Display(Name ="Company name")]
+        [Display(Name = "Company name")]
         public string CmpName { get; set; }
 
         [Display(Name = "Company description")]

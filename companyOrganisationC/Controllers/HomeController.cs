@@ -11,11 +11,10 @@ using Microsoft.AspNet.Identity;
 
 namespace companyOrganisationC.Controllers
 {
-
     [Authorize]
     public class HomeController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+        private readonly ApplicationDbContext db = new ApplicationDbContext();
 
         [AllowAnonymous]
         public ActionResult Index()
@@ -33,15 +32,17 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult SkillList()
         {
-            List<Skill> currentSkills = db.Skills.ToList();
-            string thisUserId = User.Identity.GetUserId();
-            List<ApplicationUser> admins = db.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains("800c32e0-42b9-4817-ac67-dc06700edadd")).ToList();
+            var currentSkills = db.Skills.ToList();
+            var thisUserId = User.Identity.GetUserId();
+            var admins =
+                db.Users.Where(x => x.Roles.Select(y => y.RoleId).Contains("800c32e0-42b9-4817-ac67-dc06700edadd"))
+                    .ToList();
 
-            List<UserSkill> thisUserSkills = db.UserSkills.Where(user => user.UserId == thisUserId).ToList();
-            List<UserFocus> thisUserFocuses = db.UserFocus.Where(user => user.UserId == thisUserId).ToList();
-            List<ApplicationUser> companyUsers = db.Users.ToList();
+            var thisUserSkills = db.UserSkills.Where(user => user.UserId == thisUserId).ToList();
+            var thisUserFocuses = db.UserFocus.Where(user => user.UserId == thisUserId).ToList();
+            var companyUsers = db.Users.ToList();
 
-            List<ApplicationUser> normalUser = companyUsers.Except(admins).ToList();
+            var normalUser = companyUsers.Except(admins).ToList();
 
             ViewBag.companyUsers = normalUser;
             ViewBag.userSkills = thisUserSkills;
@@ -71,23 +72,17 @@ namespace companyOrganisationC.Controllers
         public ActionResult DeleteSkill(int? id)
         {
             if (id == null)
-            {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
 
-            Skill skill = db.Skills.Find(id);
-            List<UserFocus> userFocuses = db.UserFocus.Where(focus => focus.SkillId == id).ToList();
-            List<UserSkill> userSkills = db.UserSkills.Where(x => x.SkillId == id).ToList();
+            var skill = db.Skills.Find(id);
+            var userFocuses = db.UserFocus.Where(focus => focus.SkillId == id).ToList();
+            var userSkills = db.UserSkills.Where(x => x.SkillId == id).ToList();
 
             foreach (var item in userSkills)
-            {
                 db.UserSkills.Remove(item);
-            }
 
             foreach (var item in userFocuses)
-            {
                 db.UserFocus.Remove(item);
-            }
 
             if (skill != null) db.Skills.Remove(skill);
             db.SaveChanges();
@@ -96,11 +91,10 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult ChooseFocus(int id, UserFocus userfocus)
         {
+            var userId = User.Identity.GetUserId();
+            var newSkillId = id;
 
-            string userId = User.Identity.GetUserId();
-            int newSkillId = id;
-
-            List<UserFocus> thisUserFocuses = db.UserFocus.Where(user => user.UserId == userId).ToList();
+            var thisUserFocuses = db.UserFocus.Where(user => user.UserId == userId).ToList();
 
             if (thisUserFocuses.Count >= 3) return RedirectToAction("SkillList");
 
@@ -116,7 +110,7 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult AchievedSkill()
         {
-            List<string> skillStage = new List<string> {"Beginner", "Intermediate", "Advanced"};
+            var skillStage = new List<string> {"Beginner", "Intermediate", "Advanced"};
 
             var skillStageList = new SelectList(skillStage);
             ViewBag.SkillStage = skillStageList;
@@ -126,8 +120,8 @@ namespace companyOrganisationC.Controllers
         [HttpPost]
         public ActionResult AchievedSkill(int id, UserSkill userskill)
         {
-            string userId = User.Identity.GetUserId();
-            int skillId = id;
+            var userId = User.Identity.GetUserId();
+            var skillId = id;
 
             userskill.SkillId = skillId;
             userskill.UserId = userId;
@@ -139,7 +133,7 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult RemoveSkill(int id)
         {
-            UserSkill userskill = db.UserSkills.Find(id);
+            var userskill = db.UserSkills.Find(id);
             if (userskill != null) db.UserSkills.Remove(userskill);
             db.SaveChanges();
             return RedirectToAction("SkillList");
@@ -147,7 +141,7 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult RemoveFocus(int id)
         {
-            UserFocus userfocus = db.UserFocus.Find(id);
+            var userfocus = db.UserFocus.Find(id);
             if (userfocus != null) db.UserFocus.Remove(userfocus);
             db.SaveChanges();
             return RedirectToAction("SkillList");
@@ -155,10 +149,10 @@ namespace companyOrganisationC.Controllers
 
         public ActionResult SkillDetails(int id)
         {
-            Skill thisSkill = db.Skills.Find(id);
-            List<UserSkill> userSkills = db.UserSkills.Where(x => x.SkillId == id).ToList();
-            List<UserFocus> userFocuses = db.UserFocus.Where(x => x.SkillId == id).ToList();
-            List<ApplicationUser> users = db.Users.ToList();
+            var thisSkill = db.Skills.Find(id);
+            var userSkills = db.UserSkills.Where(x => x.SkillId == id).ToList();
+            var userFocuses = db.UserFocus.Where(x => x.SkillId == id).ToList();
+            var users = db.Users.ToList();
 
             ViewBag.UserSkills = userSkills;
             ViewBag.UserInfo = users;
@@ -166,17 +160,18 @@ namespace companyOrganisationC.Controllers
             ViewBag.userFocuses = userFocuses;
             return View();
         }
+
         public ActionResult UserDetails(string id)
         {
-            List<UserFocus> userfocus = db.UserFocus.Where(x => x.UserId == id).ToList();
-            List<UserSkill> userskill = db.UserSkills.Where(x => x.UserId == id).ToList();
-            List<Skill> skill = db.Skills.ToList();
+            var userfocus = db.UserFocus.Where(x => x.UserId == id).ToList();
+            var userskill = db.UserSkills.Where(x => x.UserId == id).ToList();
+            var skill = db.Skills.ToList();
 
             ViewBag.UserFocus = userfocus;
             ViewBag.UserSkill = userskill;
             ViewBag.Skills = skill;
 
-            ApplicationUser user = db.Users.Find(id);
+            var user = db.Users.Find(id);
             return View(user);
         }
 
@@ -194,10 +189,10 @@ namespace companyOrganisationC.Controllers
             {
                 if (file.ContentLength > 0)
                 {
-                    string fileName = Path.GetFileName(file.FileName);
+                    var fileName = Path.GetFileName(file.FileName);
                     if (fileName != null)
                     {
-                        string path = Path.Combine(Server.MapPath("~/images/"), fileName);
+                        var path = Path.Combine(Server.MapPath("~/images/"), fileName);
                         company.CmpLogo = "images/" + fileName;
                         file.SaveAs(path);
                     }
@@ -213,7 +208,6 @@ namespace companyOrganisationC.Controllers
                 ViewBag.Message = "File upload failed!!";
                 return View();
             }
-
         }
 
         [Authorize(Roles = "Admin")]
@@ -226,29 +220,17 @@ namespace companyOrganisationC.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult EditCmp(CompanyInfo newCompany, int id)
         {
-            CompanyInfo company = db.CompanyInfo.Find(id);
+            var company = db.CompanyInfo.Find(id);
             if (company != null)
             {
                 if (newCompany.CmpAddress != null)
-                {
                     company.CmpAddress = newCompany.CmpAddress;
-
-                }
                 if (newCompany.CmpDesc != null)
-                {
                     company.CmpDesc = newCompany.CmpDesc;
-
-                }
                 if (newCompany.CmpName != null)
-                {
                     company.CmpName = newCompany.CmpName;
-
-                }
                 if (newCompany.CmpPhone != null)
-                {
                     company.CmpPhone = newCompany.CmpPhone;
-
-                }
                 db.Entry(company).State = EntityState.Modified;
                 db.SaveChanges();
             }
@@ -263,39 +245,31 @@ namespace companyOrganisationC.Controllers
         [HttpPost]
         public ActionResult UserEdit(ApplicationUser newUser, HttpPostedFileBase file)
         {
-            ApplicationUser user = db.Users.Find(User.Identity.GetUserId());
+            var user = db.Users.Find(User.Identity.GetUserId());
 
             if (newUser.FirstName != null)
-            {
                 user.FirstName = newUser.FirstName;
-            }
             if (newUser.LastName != null)
-            {
                 user.LastName = newUser.LastName;
-            }
             if (file != null)
-            {
                 try
                 {
-
                     if (file.ContentLength > 0)
                     {
-                        string fileName = Path.GetFileName(file.FileName);
+                        var fileName = Path.GetFileName(file.FileName);
                         if (fileName != null)
                         {
-                            string path = Path.Combine(Server.MapPath("~/images/"), fileName);
+                            var path = Path.Combine(Server.MapPath("~/images/"), fileName);
                             user.Photo = "images/" + fileName;
                             file.SaveAs(path);
                         }
                     }
-
                 }
                 catch
                 {
                     ViewBag.Message = "File upload failed!!";
                     return View();
                 }
-            }
 
             db.Entry(user).State = EntityState.Modified;
             db.SaveChanges();
@@ -328,8 +302,6 @@ namespace companyOrganisationC.Controllers
             }
 
             return View();
-
         }
-
     }
 }
